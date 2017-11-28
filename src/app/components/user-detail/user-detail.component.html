@@ -1,0 +1,270 @@
+<nz-tabset>
+    <nz-tab *ngIf="user; else noDataBlock">
+        <ng-template #nzTabHeading>
+            <i [ngClass]="'anticon anticon-mail'"></i>用户信息({{user.userStatus == 0 ? '正常':'禁止登陆'}})
+        </ng-template>
+        <form nz-form [formGroup]="userDetailValidateForm">
+            <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                    <label for="nickname" nz-form-item-required>昵称</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getUserDetailValidateFormControl('nickname')">
+                    <nz-input [nzSize]="'large'" formControlName="nickname" [nzId]="'nickname'" [ngModel]="user.nickName" [nzReadonly]=true></nz-input>
+                </div>
+            </div>
+            <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                    <label for="realname" nz-form-item-required>姓名</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getUserDetailValidateFormControl('realname')">
+                    <nz-input [nzSize]="'large'" formControlName="realname" [nzId]="'realname'" [ngModel]="user.realName" [nzReadonly]=true></nz-input>
+                </div>
+            </div>
+            <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                    <label for="telephone" nz-form-item-required>手机</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getUserDetailValidateFormControl('telephone')">
+                    <nz-input [nzSize]="'large'" formControlName="telephone" [nzId]="'telephone'" [ngModel]="user.telephone" [nzReadonly]=true></nz-input>
+                </div>
+            </div>
+            <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                    <label for="thisLoginTime" nz-form-item-required>当前登录时间</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getUserDetailValidateFormControl('thisLoginTime')">
+                    <nz-input [nzSize]="'large'" formControlName="thisLoginTime" [nzType]="'datetime'" [nzId]="'password'" [ngModel]="user.thisLoginTime" [nzReadonly]=true></nz-input>
+                </div>
+            </div>
+            <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                    <label for="thisLoginIP" nz-form-item-required>当前登录IP</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getUserDetailValidateFormControl('thisLoginIP')">
+                    <nz-input [nzSize]="'large'" formControlName="thisLoginIP" [nzType]="'text'" [nzId]="'thisLoginIP'" [ngModel]="user.thisLoginIP" [nzReadonly]=true></nz-input>
+                </div>
+            </div>
+            <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                    <label for="lastLoginTime" nz-form-item-required>最后一次登录时间</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getUserDetailValidateFormControl('lastLoginTime')">
+                    <nz-input [nzSize]="'large'" formControlName="lastLoginTime" [nzType]="'datetime'" [nzId]="'lastLoginTime'" [ngModel]="user.lastLoginTime" [nzReadonly]=true></nz-input>
+                </div>
+            </div>
+            <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                    <label for="lastLoginIP" nz-form-item-required>最后一次登录IP</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getUserDetailValidateFormControl('lastLoginIP')">
+                    <nz-input [nzSize]="'large'" formControlName="lastLoginIP" [nzType]="'text'" [nzId]="'lastLoginIP'" [ngModel]="user.lastLoginIP" [nzReadonly]=true></nz-input>
+                </div>
+            </div>
+            <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                    <label for="userStatus" nz-form-item-required>用户状态</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getUserDetailValidateFormControl('userStatus')">
+                    <nz-select [nzSize]="'large'" formControlName="userStatus" [(ngModel)]="user.userStatus" nzAllowClear [nzDisabled]="true">
+                        <nz-option [nzLabel]="'正常'" [nzValue]="0">
+                        </nz-option>
+                        <nz-option [nzLabel]="'禁止登陆'" [nzValue]="-1">
+                        </nz-option>
+                    </nz-select>
+                </div>
+            </div>
+            <div nz-form-item nz-row>
+                <div nz-col [nzSm]="6" [nzXs]="24" nz-form-label>
+                    <label nz-form-item-required>
+                <span>
+                  备注信息
+                  <nz-tooltip [nzTitle]="'记录修改备注'">
+                    <i nz-tooltip class="anticon anticon-question-circle-o"></i>
+                  </nz-tooltip>
+                </span>
+              </label>
+                </div>
+                <div nz-col [nzSm]="14" [nzXs]="24" nz-form-control [nzValidateStatus]="getUserDetailValidateFormControl('description')">
+                    <nz-input formControlName="description" [nzRows]="5" [nzType]="'textarea'" [nzPlaceHolder]="'随便写点什么'" [nzSize]="'large'" [(ngModel)]="user.remark" [nzDisabled]="true">
+                    </nz-input>
+                </div>
+            </div>
+            <!-- <div nz-form-item nz-row style="margin-bottom:8px;">
+                <div nz-form-control nz-col [nzSpan]="14" [nzOffset]="6">
+                    <button nz-button [nzSize]="'large'" [nzType]="'primary'">保存</button>
+                </div>
+            </div> -->
+        </form>
+    </nz-tab>
+    <nz-tab *ngIf="account">
+        <ng-template #nzTabHeading>
+            <i [ngClass]="'anticon anticon-appstore'"></i>账户信息({{account.accountStatus == 0 ? '正常':'冻结'}})
+        </ng-template>
+        <div class="table-operations">
+            <div nz-row>
+                <div nz-col [nzSpan]="8">
+                    <h2>账户余额: {{account.total / 100 | currency:'JPY':'symbol-narrow':'.2-2'}}
+                        <button nz-button [nzType]="'default'" [nzSize]="'small'" style="margin-left:10px;" (click)="showModalForTemplate(title, content, footer)">
+                            <i class="anticon anticon-edit"></i><span>修改</span>
+                        </button>
+                    </h2>
+                </div>
+                <div nz-col [nzSpan]="8">
+                    <h2>总收入: {{account.totalIncome / 100 | currency:'JPY':'symbol-narrow':'.2-2'}}</h2>
+                </div>
+                <div nz-col [nzSpan]="8">
+                    <h2>已提现: {{account.totalWithdraw / 100 | currency:'JPY':'symbol-narrow':'.2-2'}}</h2>
+                </div>
+            </div>
+            <ng-template #title>
+                <span>您正在修改用户({{user.nickName}}/{{user.telephone}})的账户余额</span>
+            </ng-template>
+            <ng-template #content>
+                <span>修改数额：正数为添加量，负数为扣除量，单位：元</span><br><br>
+                <nz-input-number [nzStep]="0.1" [(ngModel)]="modefy.money"></nz-input-number>元<br><br>
+                <span>修改的原因</span><br><br>
+                <nz-input [nzAutosize]=true [nzType]="'textarea'" [nzPlaceHolder]="'随便写点什么'" [nzSize]="'large'" [(ngModel)]="modefy.remark"></nz-input>
+            </ng-template>
+            <ng-template #footer>
+                <div>
+                    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="handleOk($event)" [nzLoading]="isConfirmLoading">
+                    提 交
+                  </button>
+                </div>
+            </ng-template>
+        </div>
+        <nz-table #nzTable [nzAjaxData]="_dataSet" [nzShowSizeChanger]="true" [nzLoading]="_loading" [nzTotal]="_total" [(nzPageIndex)]="_current" (nzPageIndexChange)="refreshData()" [(nzPageSize)]="_pageSize" (nzPageSizeChange)="refreshData(true)">
+            <thead nz-thead>
+                <tr>
+                    <th nz-th><span>变化前</span></th>
+                    <th nz-th><span>变化值</span></th>
+                    <th nz-th><span>变化后</span></th>
+                    <th nz-th><span>流水时间</span></th>
+                    <th nz-th><span>原因</span></th>
+                    <th nz-th><span>修改人昵称</span></th>
+                </tr>
+            </thead>
+            <tbody nz-tbody>
+                <tr nz-tbody-tr *ngFor="let data of nzTable.data">
+                    <td nz-td>{{data.before / 100 | currency:'JPY':'symbol-narrow':'.2-2'}}</td>
+                    <td nz-td>{{data.change / 100 | currency:'JPY':'symbol-narrow':'.2-2'}}</td>
+                    <td nz-td>{{data.after / 100 | currency:'JPY':'symbol-narrow':'.2-2'}}</td>
+                    <td nz-td>{{data.createAt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td nz-td>{{data.remark}}</td>
+                    <td nz-td>{{data.modefyByUser?data.modefyByUser.nickName:'本人'}}</td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </nz-tab>
+    <nz-tab *ngIf="user && account ">
+        <ng-template #nzTabHeading>
+            <i [ngClass]="'anticon anticon-setting'"></i>账户设置
+        </ng-template>
+        <form nz-form [formGroup]="settingsValidateForm" (ngSubmit)="_submitForm()">
+            <!-- <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                    <label for="nickname" nz-form-item-required>昵称</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getUserDetailValidateFormControl('nickname')">
+                    <nz-input [nzSize]="'large'" formControlName="nickname" [nzId]="'nickname'" [ngModel]="user.nickName" [nzReadonly]=true></nz-input>
+                </div>
+            </div>
+            <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                    <label for="realname" nz-form-item-required>姓名</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getUserDetailValidateFormControl('realname')">
+                    <nz-input [nzSize]="'large'" formControlName="realname" [nzId]="'realname'" [ngModel]="user.realName" [nzReadonly]=true></nz-input>
+                </div>
+            </div>
+            <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                    <label for="telephone" nz-form-item-required>手机</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getUserDetailValidateFormControl('telephone')">
+                    <nz-input [nzSize]="'large'" formControlName="telephone" [nzId]="'telephone'" [ngModel]="user.telephone" [nzReadonly]=true></nz-input>
+                </div>
+            </div>
+            <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                    <label for="thisLoginTime" nz-form-item-required>当前登录时间</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getUserDetailValidateFormControl('thisLoginTime')">
+                    <nz-input [nzSize]="'large'" formControlName="thisLoginTime" [nzType]="'datetime'" [nzId]="'password'" [ngModel]="user.thisLoginTime" [nzReadonly]=true></nz-input>
+                </div>
+            </div>
+            <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                    <label for="thisLoginIP" nz-form-item-required>当前登录IP</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getUserDetailValidateFormControl('thisLoginIP')">
+                    <nz-input [nzSize]="'large'" formControlName="thisLoginIP" [nzType]="'text'" [nzId]="'thisLoginIP'" [ngModel]="user.thisLoginIP" [nzReadonly]=true></nz-input>
+                </div>
+            </div>
+            <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                    <label for="lastLoginTime" nz-form-item-required>最后一次登录时间</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getUserDetailValidateFormControl('lastLoginTime')">
+                    <nz-input [nzSize]="'large'" formControlName="lastLoginTime" [nzType]="'datetime'" [nzId]="'lastLoginTime'" [ngModel]="user.lastLoginTime" [nzReadonly]=true></nz-input>
+                </div>
+            </div>
+            <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                    <label for="lastLoginIP" nz-form-item-required>最后一次登录IP</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getUserDetailValidateFormControl('lastLoginIP')">
+                    <nz-input [nzSize]="'large'" formControlName="lastLoginIP" [nzType]="'text'" [nzId]="'lastLoginIP'" [ngModel]="user.lastLoginIP" [nzReadonly]=true></nz-input>
+                </div>
+            </div> -->
+            <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                    <label for="accountStatus" nz-form-item-required>账户状态</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getUserDetailValidateFormControl('accountStatus')">
+                    <nz-select [nzSize]="'large'" formControlName="accountStatus" [(ngModel)]="account.accountStatus">
+                        <nz-option [nzLabel]="'正常'" [nzValue]="0">
+                        </nz-option>
+                        <nz-option [nzLabel]="'禁止提现'" [nzValue]="-1">
+                        </nz-option>
+                    </nz-select>
+                </div>
+            </div>
+            <div nz-form-item nz-row>
+                <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                    <label for="userStatus" nz-form-item-required>用户状态</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getUserDetailValidateFormControl('userStatus')">
+                    <nz-select [nzSize]="'large'" formControlName="userStatus" [(ngModel)]="user.userStatus">
+                        <nz-option [nzLabel]="'正常'" [nzValue]="0">
+                        </nz-option>
+                        <nz-option [nzLabel]="'禁止登陆'" [nzValue]="-1">
+                        </nz-option>
+                    </nz-select>
+                </div>
+            </div>
+            <div nz-form-item nz-row>
+                <div nz-col [nzSm]="6" [nzXs]="24" nz-form-label>
+                    <label nz-form-item-required>
+                <span>
+                  备注信息
+                  <nz-tooltip [nzTitle]="'记录修改备注'">
+                    <i nz-tooltip class="anticon anticon-question-circle-o"></i>
+                  </nz-tooltip>
+                </span>
+              </label>
+                </div>
+                <div nz-col [nzSm]="14" [nzXs]="24" nz-form-control [nzValidateStatus]="getUserDetailValidateFormControl('description')">
+                    <nz-input formControlName="description" [nzRows]="5" [nzType]="'textarea'" [nzPlaceHolder]="'随便写点什么'" [nzSize]="'large'" [(ngModel)]="user.remark">
+                    </nz-input>
+                </div>
+            </div>
+            <div nz-form-item nz-row style="margin-bottom:8px;">
+                <div nz-form-control nz-col [nzSpan]="14" [nzOffset]="6">
+                    <button nz-button [nzSize]="'large'" [nzType]="'primary'">保存</button>
+                </div>
+            </div>
+        </form>
+    </nz-tab>
+</nz-tabset>
+<ng-template #noDataBlock>木有数据</ng-template>

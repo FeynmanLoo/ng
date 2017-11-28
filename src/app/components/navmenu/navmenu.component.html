@@ -1,0 +1,54 @@
+<div style="width: 200px;">
+    <button nz-button [nzType]="'primary'" (click)="toggleCollapsed()" style="margin-bottom: 10px;">
+        <i class="anticon"
+        [class.anticon-menu-unfold]="isCollapsed"
+        [class.anticon-menu-fold]="!isCollapsed">
+        </i>
+    </button>
+    <ul nz-menu [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
+        <li nz-menu-item routerLink="/home">
+            <span title>
+              <i class="anticon anticon-mail"></i>
+              <span>首页</span>
+            </span>
+        </li>
+        <li nz-menu-item routerLink="/survey">
+            <span title>
+              <i class="anticon anticon-mail"></i>
+              <span>调查问卷</span>
+            </span>
+        </li>
+        <li nz-menu-item routerLink="/user">
+            <span title>
+            <i class="anticon anticon-mail"></i>
+            <span>用户管理</span>
+            </span>
+        </li>
+        <li nz-menu-item routerLink="/finance">
+            <span title>
+            <i class="anticon anticon-appstore"></i>
+            <span>财务管理</span>
+            </span>
+        </li>
+        <!-- <li nz-submenu>
+            <span title>
+              <i class="anticon anticon-appstore"></i>
+              <span>财务管理</span>
+            </span>
+            <ul>
+                <li nz-menu-item routerLink="/finance">财务流水</li>
+                <li nz-menu-item routerLink="/finance/withdrawlog">提现请求日志</li>
+            </ul>
+        </li> -->
+        <li nz-submenu>
+            <span title>
+            <i class="anticon anticon-appstore"></i>
+            <span>系统设置</span>
+            </span>
+            <ul>
+                <li nz-menu-item routerLink="/settings/config">系统参数</li>
+                <li nz-menu-item routerLink="/settings/log">系统日志</li>
+            </ul>
+        </li>
+    </ul>
+</div>

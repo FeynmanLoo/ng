@@ -1,0 +1,170 @@
+<nz-spin [nzTip]="'正在读取数据...'" [nzSize]="'large'" *ngIf="loading">
+    <nz-alert [nzType]="'info'" [nzMessage]="''" [nzDescription]="''">
+    </nz-alert>
+</nz-spin>
+<form nz-form [formGroup]="validateForm" (ngSubmit)="_submitForm()" *ngIf="!loading">
+    <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+            <label for="title" nz-form-item-required>
+        <span>
+          标题
+          <nz-tooltip [nzTitle]="'调查问卷的标题'">
+            <i nz-tooltip class="anticon anticon-question-circle-o"></i>
+          </nz-tooltip>
+        </span>
+      </label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getFormControl('title')">
+            <nz-input [nzSize]="'large'" formControlName="title" [nzId]="'title'" [(ngModel)]="data.survey.title"></nz-input>
+            <div nz-form-explain *ngIf="getFormControl('title').dirty&&getFormControl('title').hasError('required')">请输入调查问卷的标题!</div>
+        </div>
+    </div>
+    <div nz-form-item nz-row>
+        <div nz-col [nzSm]="6" [nzXs]="24" nz-form-label>
+            <label nz-form-item-required>
+        <span>
+          描述
+          <nz-tooltip [nzTitle]="'调查问卷的主题描述'">
+            <i nz-tooltip class="anticon anticon-question-circle-o"></i>
+          </nz-tooltip>
+        </span>
+      </label>
+        </div>
+        <div nz-col [nzSm]="14" [nzXs]="24" nz-form-control [nzValidateStatus]="getFormControl('description')">
+            <nz-input formControlName="description" [nzRows]="5" [nzType]="'textarea'" [nzPlaceHolder]="'随便写点什么'" [nzSize]="'large'" [(ngModel)]="data.survey.description">
+            </nz-input>
+            <div nz-form-explain *ngIf="getFormControl('description').dirty&&getFormControl('description').hasError('required')">请输入调查问卷的主题描述!</div>
+        </div>
+    </div>
+    <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+            <label for="finishReward" nz-form-item-required>
+        <span>
+          用户完成奖励
+          <nz-tooltip [nzTitle]="'用户完成奖励'">
+            <i nz-tooltip class="anticon anticon-question-circle-o"></i>
+          </nz-tooltip>
+        </span>
+      </label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getFormControl('finishReward')">
+            <nz-input-number [nzMin]="0" [nzStep]="0.1" [nzSize]="'large'" formControlName="finishReward" [(ngModel)]="data.survey.finishReward"></nz-input-number>
+            <div nz-form-explain *ngIf="getFormControl('finishReward').dirty&&getFormControl('finishReward').hasError('required')">请输入用户完成奖励，单位元!</div>
+        </div>
+    </div>
+    <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+            <label for="firstReward" nz-form-item-required>
+        <span>
+          首推推荐人奖励
+          <nz-tooltip [nzTitle]="'用户完成,首推推荐人奖励'">
+            <i nz-tooltip class="anticon anticon-question-circle-o"></i>
+          </nz-tooltip>
+        </span>
+      </label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getFormControl('firstReward')">
+            <nz-input-number [nzMin]="0" [nzStep]="0.1" [nzSize]="'large'" formControlName="firstReward" [(ngModel)]="data.survey.firstReward"></nz-input-number>
+            <div nz-form-explain *ngIf="getFormControl('firstReward').dirty&&getFormControl('firstReward').hasError('required')">请输入首推推荐人奖励，单位元!</div>
+        </div>
+    </div>
+    <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+            <label for="secondReward" nz-form-item-required>
+        <span>
+          递推推荐人奖励
+          <nz-tooltip [nzTitle]="'用户完成,递推推荐人奖励'">
+            <i nz-tooltip class="anticon anticon-question-circle-o"></i>
+          </nz-tooltip>
+        </span>
+      </label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getFormControl('secondReward')">
+            <nz-input-number [nzMin]="0" [nzStep]="0.1" [nzSize]="'large'" formControlName="secondReward" [(ngModel)]="data.survey.secondReward"></nz-input-number>
+            <div nz-form-explain *ngIf="getFormControl('secondReward').dirty&&getFormControl('secondReward').hasError('required')">请输入递推推荐人奖励，单位元!</div>
+        </div>
+    </div>
+
+    <div nz-form-item nz-row *ngFor="let question of data.questions;let i = index">
+        <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+            <label [attr.for]="question.controlInstance">问题{{i+1}}({{question.questionType | questionType}})</label>
+        </div>
+        <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" [nzValidateStatus]="getFormControl(question.controlInstance)">
+            <nz-input style="width: 80%;" [nzSize]="'large'" [nzPlaceHolder]="'请输入问题描述'" [formControlName]="question.controlInstance" [nzId]="question.controlInstance" [(ngModel)]="question.description">
+            </nz-input>
+            <i class="anticon anticon-minus-circle-o dynamic-delete-button" (click)="removeQuestion(question,$event)"></i>
+            <div nz-form-explain *ngIf="getFormControl(question.controlInstance)?.dirty&&getFormControl(question.controlInstance)?.hasError('required')">
+                请输入问题内容或者删除当前问题。
+            </div>
+        </div>
+        <div *ngIf="(question.questionType >= 0 && question.questionType <= 2)">
+            <div nz-form-item nz-row *ngFor="let option of question.options;let i = index" class="option">
+                <div nz-form-label nz-col [nzSm]="6" [nzXs]="24" [nzOffset]="1">
+                    <label [attr.for]="option.controlInstance">选项({{i+1}})</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" [nzValidateStatus]="getFormControl(option.controlInstance)">
+                    <nz-input style="width: 60%;" [nzSize]="'large'" [nzPlaceHolder]="'请输入选项内容'" [formControlName]="option.controlInstance" [nzId]="option.controlInstance" [(ngModel)]="option.optionContent">
+                    </nz-input>
+                    <i class="anticon anticon-plus-circle" (click)="addOption(question,$event)" *ngIf="i == question.options.length-1"></i>
+                    <i class="anticon anticon-minus-circle-o dynamic-delete-button" (click)="removeOption(question,option,$event)"></i>
+                    <div nz-form-explain *ngIf="getFormControl(option.controlInstance)?.dirty&&getFormControl(option.controlInstance)?.hasError('required')">
+                        请输入选项内容或者删除当前选项。
+                    </div>
+                </div>
+            </div>
+            <div nz-form-item nz-row *ngIf="question.questionType == 2" class="option">
+                <div nz-form-label nz-col [nzSm]="6" [nzXs]="24" [nzOffset]="1">
+                    <label [attr.for]='question.tipsUrlInstance'>答案提示(参考页面链接)</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" [nzValidateStatus]='getFormControl(question.tipsUrlInstance)'>
+                    <nz-input style="width: 60%;" [nzSize]="'large'" [nzPlaceHolder]="'请输入正确的页面链接'" [formControlName]='question.tipsUrlInstance' [nzId]='question.tipsUrlInstance' [(ngModel)]="question.tipsUrl">
+                    </nz-input>
+                    <div nz-form-explain *ngIf='getFormControl(question.tipsUrlInstance)?.dirty&&getFormControl(question.tipsUrlInstance)?.hasError("required")'>
+                        必对题，请务必输入答案提示参考页面链接。
+                    </div>
+                </div>
+            </div>
+            <div nz-form-item nz-row *ngIf="question.questionType == 2" class="option">
+                <div nz-form-label nz-col [nzSm]="6" [nzXs]="24" [nzOffset]="1">
+                    <label [attr.for]='question.standardAnswerInstance'>正确答案</label>
+                </div>
+                <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" [nzValidateStatus]='getFormControl(question.standardAnswerInstance)'>
+                    <nz-input style="width: 60%;" [nzSize]="'large'" [nzPlaceHolder]="'请输入正确答案'" [formControlName]='question.standardAnswerInstance' [nzId]='question.standardAnswerInstance' [(ngModel)]="question.standardAnswer">
+                    </nz-input>
+                    <div nz-form-explain *ngIf='getFormControl(question.standardAnswerInstance)?.dirty&&getFormControl(question.standardAnswerInstance)?.hasError("required")'>
+                        必对题，请务必输入正确答案。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div nz-form-item nz-row>
+        <div nz-form-control nz-col [nzSm]="6" [nzXs]="24" [nzOffset]="8">
+            <nz-dropdown [nzPlacement]="'topCenter'">
+                <button nz-button [nzType]="'dashed'" [nzSize]="'large'" nz-dropdown style="width:200%" (click)="addQuestion(-1, $event)">
+          <i class="anticon anticon-plus"></i>
+          <span>增加问题</span>
+        </button>
+                <ul nz-menu>
+                    <li nz-menu-item>
+                        <a rel="noopener noreferrer" (click)="addQuestion(0, $event)">单选题</a>
+                    </li>
+                    <li nz-menu-item>
+                        <a rel="noopener noreferrer" (click)="addQuestion(1, $event)">多选题</a>
+                    </li>
+                    <li nz-menu-item>
+                        <a rel="noopener noreferrer" (click)="addQuestion(2, $event)">必对题</a>
+                    </li>
+                    <li nz-menu-item>
+                        <a rel="noopener noreferrer" (click)="addQuestion(3, $event)">填空题</a>
+                    </li>
+                </ul>
+            </nz-dropdown>
+        </div>
+    </div>
+    <div nz-form-item nz-row style="margin-bottom:8px;">
+        <div nz-form-control nz-col [nzSpan]="14" [nzOffset]="6">
+            <button nz-button [nzSize]="'large'" [nzType]="'primary'">提交</button>
+        </div>
+    </div>
+</form>

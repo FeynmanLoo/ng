@@ -1,0 +1,18 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-navmenu',
+  templateUrl: './navmenu.component.html',
+  styleUrls: ['./navmenu.component.css']
+})
+export class NavmenuComponent implements OnInit {
+  isCollapsed = false;
+  toggleCollapsed() {
+    this.isCollapsed = !this.isCollapsed;
+  }
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}

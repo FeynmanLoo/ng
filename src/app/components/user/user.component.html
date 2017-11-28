@@ -1,0 +1,62 @@
+<div class="table-operations">
+    <div nz-dropdown-custom class="custom-filter-dropdown">
+        <nz-input [nzPlaceHolder]="'检索'" [(ngModel)]="_searchValue"></nz-input>
+        <button nz-button [nzType]="'primary'" (click)="search()">搜索</button>
+    </div>
+</div>
+<nz-table #nzTable [nzAjaxData]="_dataSet" [nzShowSizeChanger]="true" [nzLoading]="_loading" [nzTotal]="_total" [(nzPageIndex)]="_current" (nzPageIndexChange)="refreshData()" [(nzPageSize)]="_pageSize" (nzPageSizeChange)="refreshData(true)">
+    <thead nz-thead>
+        <tr>
+            <th nz-th><span>微信头像</span></th>
+            <th nz-th><span>本地头像</span></th>
+            <th nz-th><span>昵称</span></th>
+            <th nz-th><span>姓名</span></th>
+            <th nz-th>
+                <span>性别</span>
+                <nz-dropdown [nzTrigger]="'click'">
+                    <i class="anticon anticon-filter" nz-dropdown></i>
+                    <ul nz-menu>
+                        <li nz-menu-item *ngFor="let filter of _filterGender">
+                            <label nz-checkbox [(ngModel)]="filter.value">
+                      <span>{{filter.name}}</span>
+                    </label>
+                        </li>
+                    </ul>
+                    <div nz-table-filter>
+                        <span nz-table-filter-confirm (click)="refreshData(true)">OK</span>
+                        <span nz-table-filter-clear (click)="reset()">Reset</span>
+                    </div>
+                </nz-dropdown>
+            </th>
+            <th nz-th><span>手机</span></th>
+            <th nz-th>
+                <span>账户余额</span>
+                <nz-table-sort (nzValueChange)="sort('total',$event)"></nz-table-sort>
+            </th>
+            <th nz-th>
+                <span>创建时间</span>
+                <nz-table-sort (nzValueChange)="sort('createAt',$event)"></nz-table-sort>
+            </th>
+            <th nz-th><span>账号状态</span></th>
+            <th nz-th><span>操作</span></th>
+        </tr>
+    </thead>
+    <tbody nz-tbody>
+        <tr nz-tbody-tr *ngFor="let data of nzTable.data">
+            <td nz-td>
+                <nz-avatar [nzShape]="'square'" [nzSize]="'large'" [nzIcon]="'user'" [nzSrc]="data.headImg"></nz-avatar>
+            </td>
+            <td nz-td>
+                <nz-avatar [nzShape]="'square'" [nzSize]="'large'" [nzIcon]="'user'" [nzSrc]="data.picUrl"></nz-avatar>
+            </td>
+            <td nz-td>{{data.nickName}}</td>
+            <td nz-td>{{data.realName}}</td>
+            <td nz-td>{{data.sex == 0 ? '未知':(data.sex == 1 ? '男':'女')}}</td>
+            <td nz-td>{{data.telephone}}</td>
+            <td nz-td>{{data.total / 100 | currency:'JPY':'symbol-narrow':'.2-2'}}</td>
+            <td nz-td>{{data.createAt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td nz-td>{{data.userStatus == 0 ? '正常':'禁止登陆'}}</td>
+            <td nz-td><button nz-button nzType="primary" [routerLink]="['/user', data.userId]">详情</button></td>
+        </tr>
+    </tbody>
+</nz-table>

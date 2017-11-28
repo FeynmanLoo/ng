@@ -1,0 +1,70 @@
+<div class="table-operations">
+    <div nz-dropdown-custom class="custom-filter-dropdown">
+        <nz-input [nzPlaceHolder]="'检索'" [(ngModel)]="_searchValue"></nz-input>
+        <button nz-button [nzType]="'primary'" (click)="search()">搜索</button>
+        <button nz-button [nzType]="'primary'" (click)="showModalForTemplate(title, content, footer)">导出</button>
+    </div>
+</div>
+<nz-table #nzTable [nzAjaxData]="_dataSet" [nzShowSizeChanger]="true" [nzLoading]="_loading" [nzTotal]="_total" [(nzPageIndex)]="_current" (nzPageIndexChange)="refreshData()" [(nzPageSize)]="_pageSize" (nzPageSizeChange)="refreshData(true)">
+    <thead nz-thead>
+        <tr>
+            <th nz-th>
+                <span>用户信息</span>
+                <nz-table-sort (nzValueChange)="sort('UserId',$event)"></nz-table-sort>
+            </th>
+            <th nz-th><span>变动前</span></th>
+            <th nz-th><span>变化值</span></th>
+            <th nz-th><span>变动后</span></th>
+            <th nz-th>
+                <span>流水时间</span>
+                <nz-table-sort (nzValueChange)="sort('CreateAt',$event)"></nz-table-sort>
+            </th>
+            <th nz-th><span>原因</span></th>
+            <th nz-th>
+                <span>修改人</span>
+                <nz-table-sort (nzValueChange)="sort('ModefyUserId',$event)"></nz-table-sort>
+            </th>
+        </tr>
+    </thead>
+    <tbody nz-tbody>
+        <tr nz-tbody-tr *ngFor="let data of nzTable.data">
+            <td nz-td>{{data.user.telephone?data.user.telephone:data.user.realName?data.user.realName:data.user.nickName}}</td>
+            <td nz-td>{{data.before / 100 }}</td>
+            <td nz-td>{{data.change / 100}}</td>
+            <td nz-td>{{data.after / 100}}</td>
+            <td nz-td>{{data.createAt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td nz-td>{{data.remark }}</td>
+            <td nz-td *ngIf="data.modefyByUser">{{data.modefyByUser.telephone?data.modefyByUser.telephone:data.modefyByUser.realName?data.modefyByUser.realName:data.modefyByUser.nickName}}</td>
+            <td nz-td *ngIf="!data.modefyByUser">用户本人操作</td>
+        </tr>
+    </tbody>
+</nz-table>
+
+<ng-template #title>
+    <span>您需要导出哪一些数据呢？</span>
+</ng-template>
+<ng-template #content>
+    <div nz-row>
+        <div nz-col [nzSpan]="4">
+            时间条件
+        </div>
+        <div nz-col [nzSpan]="8">
+            <nz-switch [(ngModel)]="exportExcel.timeFlag">
+                <span checked>全部日期</span>
+                <span unchecked>限制时段</span>
+            </nz-switch>
+        </div>
+        <div nz-col [nzSpan]="12" *ngIf="!exportExcel.timeFlag">
+            从
+            <nz-datepicker [(ngModel)]="exportExcel.beginTime" [nzPlaceHolder]="'开始日期'" [nzFormat]="'YYYY/MM/DD'"></nz-datepicker>
+            到
+            <nz-datepicker [(ngModel)]="exportExcel.endTime" [nzPlaceHolder]="'结束日期'" [nzFormat]="'YYYY/MM/DD'"></nz-datepicker>
+        </div>
+    </div>
+</ng-template>
+<ng-template #footer>
+    <div>
+        <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="handleOk($event)" [nzLoading]="isConfirmLoading">立 刻 导 出</button>
+        <!-- <button nz-button [nzType]="'primary'" [nzSize]="'large'" [nzLoading]="isConfirmLoading" fileSaver [fileName]="'财务流水.xls'" [url]="'http://localhost:6517/api/Ledger/ExportExcel'" [header]="{ token: 'demo' }" [query]="{ beginTime: exportExcel.beginTime, endTime: exportExcel.endTime }">立 刻 导 出</button> -->
+    </div>
+</ng-template>
